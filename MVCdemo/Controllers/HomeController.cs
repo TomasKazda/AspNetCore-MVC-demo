@@ -42,17 +42,19 @@ namespace MVCdemo.Controllers
                 if (UserData.Age >= 18)
                 {
                     HttpContext.Session.Set<User>(sessionKey, UserData);
-                    return RedirectToAction("LoginSuccess");
+                   
+                    return RedirectToAction("LoginSuccess", UserData);
                 }
             }
 
             return View("LoginForm");
         }
 
-        public IActionResult LoginSuccess()
+        public IActionResult LoginSuccess(User userData)
         {
 
-            return View(HttpContext.Session.Get<User>(sessionKey));
+            //return View(HttpContext.Session.Get<User>(sessionKey));
+            return View(userData);
         }
 
         public IActionResult Privacy()
