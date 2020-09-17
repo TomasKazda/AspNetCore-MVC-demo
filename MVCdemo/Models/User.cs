@@ -16,7 +16,18 @@ namespace MVCdemo.Models
             [Display(Name = "Příjmení")]
             public string LastName { get; set; }
 
+            public int NoOfKids { get; set; }
+
             [Display(Name = "Datum narození")]
-            public DateTime DateTime { get; set; }
-        }
+            public DateTime BirthDate { get; set; }
+
+            public int Age
+            {
+                get
+                {
+                if (BirthDate == default) return 0;
+                    return new DateTime(DateTime.Now.Subtract(BirthDate).Ticks).Year - 1;
+                }
+            }   
+    }
 }

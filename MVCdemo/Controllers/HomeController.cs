@@ -6,12 +6,17 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MVCdemo.Models;
+using Helpers;
 
 namespace MVCdemo.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly string sessionKey = "BFLMkey123xyz";
+    
+        [BindProperty]
+        public User UserData { get; set; }
 
         public HomeController(ILogger<HomeController> logger)
         {
@@ -34,10 +39,20 @@ namespace MVCdemo.Controllers
         { 
             if (ModelState.IsValid)
             {
-
+                if (UserData.Age >= 18)
+                {
+                    HttpContext.Session.Set<User>(sessionKey, UserData);
+                    return RedirectToAction("LoginSuccess");
+                }
             }
 
             return View("LoginForm");
+        }
+
+        public IActionResult LoginSuccess()
+        {
+
+            return View(HttpContext.Session.Get<User>(sessionKey));
         }
 
         public IActionResult Privacy()
